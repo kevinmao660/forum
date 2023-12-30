@@ -7,7 +7,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
         <span className='blue_gradient'>{type} Post</span>
       </h1>
       <p className='desc text-left max-w-md'>
-        {type} share amazing events
+        {type} Amazing Events
       </p>
 
       <form
@@ -20,8 +20,8 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
           </span>
 
           <textarea
-            value={post.prompt}
-            onChange={(e) => setPost({ ...post, prompt: e.target.value })}
+            value={post.event}
+            onChange={(e) => setPost({ ...post, event: e.target.value })}
             placeholder='Write your post here'
             required
             className='form_textarea '
@@ -30,7 +30,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
 
         <label>
           <span className='font-satoshi font-semibold text-base text-gray-700'>
-            Field of Prompt{" "}
+            Field of Event{" "}
             <span className='font-normal'>
               (#product, #webdevelopment, #idea, etc.)
             </span>
@@ -55,7 +55,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             disabled={submitting}
             className='px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white'
           >
-            {submitting ? `${type}ing...` : type}
+            {submitting ? `${type}` : type} 
           </button>
         </div>
       </form>

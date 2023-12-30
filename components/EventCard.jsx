@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
+const EventCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   const { data: session } = useSession();
   const pathName = usePathname();
   const router = useRouter();
@@ -14,7 +14,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   const updateSignup = async () => {
     console.log(post._id)
     try {
-      const response = await fetch(`/api/prompt/${post._id.toString()}`, { 
+      const response = await fetch(`/api/event/${post._id.toString()}`, { 
         method: "PUT",
         body: JSON.stringify({
           user: session?.user       
@@ -40,7 +40,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
 
   const SignUpList = ({ data }) => {
     return (
-      <div className='mt-16 prompt_layout'> 
+      <div className='mt-16 event_layout'> 
         {data.map((user) => (
           <div>
             <h1>
@@ -53,7 +53,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   };
 
   return (
-    <div className='prompt_card'>
+    <div className='event_card'>
       <div className='flex justify-between items-start gap-5'>
         <div
           className='flex-1 flex justify-start items-center gap-3 cursor-pointer'
@@ -80,11 +80,11 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
           <div className='copy_btn' onClick={handleSignups}>
             <Image
             src={
-              copied === post.prompt
+              copied === post.event
               ? "/assets/icons/tick.svg"
               : "/assets/icons/copy.svg"
             }
-            alt={copied === post.prompt ? "tick_icon" : "copy_icon"}
+            alt={copied === post.event ? "tick_icon" : "copy_icon"}
             width={12}
             height={12}
             />
@@ -95,7 +95,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
         )}
       </div>
 
-      <p className='my-4 font-satoshi text-sm text-gray-700'>{post.prompt}</p>
+      <p className='my-4 font-satoshi text-sm text-gray-700'>{post.event}</p>
       <p
         className='font-inter text-sm blue_gradient cursor-pointer'
         onClick={() => handleTagClick && handleTagClick(post.tag)}
@@ -128,4 +128,4 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   );
 };
 
-export default PromptCard;
+export default EventCard;

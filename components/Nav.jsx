@@ -4,8 +4,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {useState, useEffect} from 'react';
 import {signIn, signOut, useSession, getProviders } from 'next-auth/react';
+import { useRouter } from "next/navigation";
 
 const Nav = () => {
+  const router = useRouter();
   const {data : session } = useSession() ;
 
   const[providers, setProviders] = useState(null); 
@@ -30,11 +32,15 @@ const Nav = () => {
       <div className = "sm:flex hidden">
         {session?.user ?(  
           <div className = "flex gap-3 md:gap-5">
-            <Link href="/create-prompt" className = "black_btn">
+            <Link href="/create-event" className = "black_btn">
               Create Event!
             </Link>
 
-            <button type = "button" onClick = {signOut} className = "outline_btn"> 
+            <button type = "button" onClick={() => {
+              signOut({ redirect: false }).then(() => {
+              router.push("/"); // Redirect to the dashboard page after signing out
+              });
+              }} className = "outline_btn"> 
                 Sign Out
             </button>
 
@@ -72,7 +78,7 @@ const Nav = () => {
                   Create Event!
                 </Link>
                 <button type = "button" onClick = {() => {
-                  setToggleDropdown (false); signOut();
+                  setToggleDropdown (false); signOut(); router.push("/");
                 }} className = "mt-5 w-full black_btn">
                   Sign Out
                 </button>

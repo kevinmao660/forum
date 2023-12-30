@@ -1,4 +1,4 @@
-import PromptCard from "./PromptCard";
+import EventCard from "./EventCard";
 
 const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
   return (
@@ -8,9 +8,9 @@ const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
       </h1>
       <p className='desc text-left'>{desc}</p>
 
-      <div className='mt-10 prompt_layout'>
+      <div className='mt-10 event_layout'>
         {data.map((post) => (
-          <PromptCard
+          <EventCard
             key={post._id}
             post={post}
             handleEdit={() => handleEdit && handleEdit(post)}

@@ -6,39 +6,39 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import Form from "@components/Form";
 
-const EditPrompt = () => {
+const EditEvent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const promptId = searchParams.get('id'); 
+  const eventId = searchParams.get('id'); 
 
   const [submitting, setIsSubmitting] = useState(false);
-  const [post, setPost] = useState({ prompt: "", tag: "" });
+  const [post, setPost] = useState({ event: "", tag: "" });
 
   useEffect(() => {
-    const getPromptDetails = async () => {
-        const response = await fetch(`api/prompt/${promptId}`)
+    const getEventDetails = async () => {
+        const response = await fetch(`api/event/${eventId}`)
         const data = await response.json();
 
         setPost({
-            prompt: data.prompt,
+            event: data.event,
             tag: data.tag,
             signups: data.signups,
         })
     }
-    if(promptId) getPromptDetails()
-  }, [promptId])
+    if(eventId) getEventDetails()
+  }, [eventId])
 
-  const updatePrompt = async (e) => {
+  const updateEvent = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if(!promptId) return alert('Prompt ID not found')
-    console.log(promptId)
+    if(!eventId) return alert('Event ID not found')
+    console.log(eventId)
     try {
-      const response = await fetch(`/api/prompt/${promptId}`, {
+      const response = await fetch(`/api/event/${eventId}`, {
         method: "PATCH",
         body: JSON.stringify({
-          prompt: post.prompt,
+          event: post.event,
           tag: post.tag,
         }),
       });
@@ -59,9 +59,9 @@ const EditPrompt = () => {
       post={post}
       setPost={setPost}
       submitting={submitting}
-      handleSubmit={updatePrompt}
+      handleSubmit={updateEvent}
     />
   );
 };
 
-export default EditPrompt;
+export default EditEvent;
