@@ -15,9 +15,23 @@ export const GET = async (request, { params }) => {
     }
 }
 
+export const PUT = async (request, { params }) => {
+    const { user } = await request.json();
+    try {
+        await connectToDB();
+        const existingPrompt = await Prompt.findById(params.id);
+        const temp = existingPrompt.signups
+        temp.push(user);
+        existingPrompt.signups = temp;
+        await existingPrompt.save();
+        return new Response("Signup successful", { status: 200 });
+    } catch (error) {
+        return new Response("Error Signing Up", { status: 500 });
+    } 
+};
+
 export const PATCH = async (request, { params }) => {
     const { prompt, tag } = await request.json();
-
     try {
         await connectToDB();
 

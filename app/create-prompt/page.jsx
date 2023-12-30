@@ -11,7 +11,7 @@ const CreatePrompt = () => {
   const { data: session } = useSession();
 
   const [submitting, setIsSubmitting] = useState(false);
-  const [post, setPost] = useState({ prompt: "", tag: "" });
+  const [post, setPost] = useState({ prompt: "", tag: "", signups: [session?.user] });
 
   const createPrompt = async (e) => {
     e.preventDefault();
@@ -24,11 +24,13 @@ const CreatePrompt = () => {
           prompt: post.prompt,
           userId: session?.user.id,
           tag: post.tag,
+          signups: post.signups,
         }),
       });
 
       if (response.ok) {
         router.push("/");
+        console.log(post)
       }
     } catch (error) {
       console.log(error);

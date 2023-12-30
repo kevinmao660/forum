@@ -22,6 +22,7 @@ const EditPrompt = () => {
         setPost({
             prompt: data.prompt,
             tag: data.tag,
+            signups: data.signups,
         })
     }
     if(promptId) getPromptDetails()
@@ -32,7 +33,7 @@ const EditPrompt = () => {
     setIsSubmitting(true);
 
     if(!promptId) return alert('Prompt ID not found')
-
+    console.log(promptId)
     try {
       const response = await fetch(`/api/prompt/${promptId}`, {
         method: "PATCH",

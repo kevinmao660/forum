@@ -3,27 +3,53 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   const { data: session } = useSession();
   const pathName = usePathname();
   const router = useRouter();
-
   const [copied, setCopied] = useState("");
 
-  const handleProfileClick = () => {
-    console.log(post);
+  const updateSignup = async () => {
+    console.log(post._id)
+    try {
+      const response = await fetch(`/api/prompt/${post._id.toString()}`, { 
+        method: "PUT",
+        body: JSON.stringify({
+          user: session?.user       
+        }),
+      });
 
-    if (post.creator._id === session?.user.id) return router.push("/profile");
-
-    router.push(`/profile/${post.creator._id}?name=${post.creator.username}`);
+      if(response.ok) {
+        location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    } 
   };
 
-  const handleCopy = () => {
-    setCopied(post.prompt);
-    navigator.clipboard.writeText(post.prompt);
-    setTimeout(() => setCopied(false), 3000);
+  const handleSignups = () => {
+    const hasConfirmed = confirm(
+      "Confirm you would like to sign up."
+    );
+    if (hasConfirmed){
+      updateSignup();
+    }
+  };
+
+  const SignUpList = ({ data }) => {
+    return (
+      <div className='mt-16 prompt_layout'> 
+        {data.map((user) => (
+          <div>
+            <h1>
+            {user.name}
+            </h1>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -31,7 +57,6 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
       <div className='flex justify-between items-start gap-5'>
         <div
           className='flex-1 flex justify-start items-center gap-3 cursor-pointer'
-          onClick={handleProfileClick}
         >
           <Image
             src={post.creator.image}
@@ -51,18 +76,23 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
           </div>
         </div>
 
-        <div className='copy_btn' onClick={handleCopy}>
-          <Image
+        {session?.user ?(
+          <div className='copy_btn' onClick={handleSignups}>
+            <Image
             src={
               copied === post.prompt
-                ? "/assets/icons/tick.svg"
-                : "/assets/icons/copy.svg"
+              ? "/assets/icons/tick.svg"
+              : "/assets/icons/copy.svg"
             }
             alt={copied === post.prompt ? "tick_icon" : "copy_icon"}
             width={12}
             height={12}
-          />
-        </div>
+            />
+          </div>
+        ): (
+          <div>
+          </div>
+        )}
       </div>
 
       <p className='my-4 font-satoshi text-sm text-gray-700'>{post.prompt}</p>
@@ -89,7 +119,12 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
           </p>
         </div>
       )}
+
+      <div>
+        <SignUpList data = {post.signups} />
+      </div>
     </div>
+    
   );
 };
 
