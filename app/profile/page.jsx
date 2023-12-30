@@ -48,13 +48,21 @@ const MyProfile = () => {
   };
 
   return (
+    <div className = "sm:flex hidden">
+    {session?.user ?(  
     <Profile
-      name='My'
-      desc='Welcome to your personalized profile page.'
-      data={posts}
-      handleEdit={handleEdit}
-      handleDelete={handleDelete}
-    />
+    name='My'
+    desc='Welcome to your personalized profile page.'
+    data={posts}
+    handleEdit={handleEdit}
+    handleDelete={handleDelete}
+  />
+  ): (
+    <div>
+      sign in please
+    </div>
+  )}
+</div>
   );
 };
 

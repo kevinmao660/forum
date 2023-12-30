@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Form from "@components/Form";
 
 const CreateEvent = () => {
+  
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -40,13 +41,21 @@ const CreateEvent = () => {
   };
 
   return (
-    <Form
+    <div className = "sm:flex hidden">
+      {session?.user ?(  
+      <Form
       type='Create'
       post={post}
       setPost={setPost}
       submitting={submitting}
       handleSubmit={createEvent}
     />
+    ): (
+      <div>
+        sign in please
+      </div>
+    )}
+  </div>
   );
 };
 
