@@ -113,8 +113,9 @@ const EventCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
       )}
 
       <div>
-      <br>
-      </br>
+      <br/>
+      <hr/>
+      <br/>
         <h1 className = "font-bold"> 
           SignUps
         </h1>
