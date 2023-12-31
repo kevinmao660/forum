@@ -40,12 +40,12 @@ const EventCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
 
   const SignUpList = ({ data }) => {
     return (
-      <div className='mt-16 event_layout'> 
+      <div className= 'event_layout'> 
         {data.map((user) => (
           <div>
-            <h1>
+            <p>
             {user.name}
-            </h1>
+            </p>
           </div>
         ))}
       </div>
@@ -55,8 +55,7 @@ const EventCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   return (
     <div className='event_card'>
       <div className='flex justify-between items-start gap-5'>
-        <div
-          className='flex-1 flex justify-start items-center gap-3 cursor-pointer'
+        <div className='flex-1 flex justify-start items-center gap-3 cursor-pointer'
         >
           <Image
             src={post.creator.image}
@@ -77,17 +76,10 @@ const EventCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
         </div>
 
         {session?.user ?(
-          <div className='copy_btn' onClick={handleSignups}>
-            <Image
-            src={
-              copied === post.event
-              ? "/assets/icons/tick.svg"
-              : "/assets/icons/copy.svg"
-            }
-            alt={copied === post.event ? "tick_icon" : "copy_icon"}
-            width={12}
-            height={12}
-            />
+          <div className = "outline_btn" onClick={handleSignups}>
+            <p>
+              Sign Up!
+            </p>
           </div>
         ): (
           <div>
@@ -121,6 +113,11 @@ const EventCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
       )}
 
       <div>
+      <br>
+      </br>
+        <h1 className = "font-bold"> 
+          SignUps
+        </h1>
         <SignUpList data = {post.signups} />
       </div>
     </div>
