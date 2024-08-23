@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
+import { useState } from "react";
 import EventCard from "./EventCard";
 
 const EventCardList = ({ data, handleTagClick }) => {
   return (
-    <div className='mt-16 event_layout'>
+    <div className="mt-16 event_layout">
       {data.map((post) => (
         <EventCard
           key={post._id}
@@ -18,24 +17,11 @@ const EventCardList = ({ data, handleTagClick }) => {
   );
 };
 
-const Feed = () => {
-  const [allPosts, setAllPosts] = useState([]);
-
+const Feed = ({ allPosts }) => {
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
-
-  const fetchPosts = async () => {
-    const response = await fetch("/api/event");
-    const data = await response.json();
-
-    setAllPosts(data);
-  };
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
 
   const filterEvents = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
@@ -68,15 +54,15 @@ const Feed = () => {
   };
 
   return (
-    <section className='feed'>
-        <input
-          type='text'
-          placeholder='Search for a tag or a username'
-          value={searchText}
-          onChange={handleSearchChange}
-          required
-          className='search_input peer'
-        />
+    <section className="feed">
+      <input
+        type="text"
+        placeholder="Search for a tag or a username"
+        value={searchText}
+        onChange={handleSearchChange}
+        required
+        className="search_input peer"
+      />
 
       {/* All Events */}
       {searchText ? (
