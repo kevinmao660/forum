@@ -2,7 +2,7 @@ import Feed from '@components/Feed';
 
 // This function fetches the posts data and is called on the server
 async function fetchPosts() {
-  const response = await fetch('http://localhost:3000/api/event');
+  const response = await fetch('https://forum-ruddy.vercel.app/api/event');
   const data = await response.json();
   return data;
 }
