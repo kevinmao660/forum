@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import Form from "@components/Form";
 
-const EditEvent = () => {
+const EditEventContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const eventId = searchParams.get('id'); 
@@ -16,24 +14,24 @@ const EditEvent = () => {
 
   useEffect(() => {
     const getEventDetails = async () => {
-        const response = await fetch(`api/event/${eventId}`)
-        const data = await response.json();
+      const response = await fetch(`/api/event/${eventId}`);
+      const data = await response.json();
 
-        setPost({
-            event: data.event,
-            tag: data.tag,
-            signups: data.signups,
-        })
-    }
-    if(eventId) getEventDetails()
-  }, [eventId])
+      setPost({
+        event: data.event,
+        tag: data.tag,
+        signups: data.signups,
+      });
+    };
+    if (eventId) getEventDetails();
+  }, [eventId]);
 
   const updateEvent = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if(!eventId) return alert('Event ID not found')
-    console.log(eventId)
+    if (!eventId) return alert('Event ID not found');
+
     try {
       const response = await fetch(`/api/event/${eventId}`, {
         method: "PATCH",
@@ -63,5 +61,11 @@ const EditEvent = () => {
     />
   );
 };
+
+const EditEvent = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <EditEventContent />
+  </Suspense>
+);
 
 export default EditEvent;
