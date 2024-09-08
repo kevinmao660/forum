@@ -1,11 +1,10 @@
 import Feed from '@components/Feed';
 
-const fetchPosts = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/event`);
+async function fetchPosts() {
+  const response = await fetch(`https://forum-ruddy.vercel.app/api/event`);
   const data = await response.json();
-  setAllPosts(data);
-};
-
+  return data;
+}
 
 const Home = async () => {
   const allPosts = await fetchPosts();
