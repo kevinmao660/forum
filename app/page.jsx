@@ -1,11 +1,11 @@
 import Feed from '@components/Feed';
 
-// This function fetches the posts data and is called on the server
-async function fetchPosts() {
-  const response = await fetch('https://forum-ruddy.vercel.app/api/event');
+const fetchPosts = async () => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/event`);
   const data = await response.json();
-  return data;
-}
+  setAllPosts(data);
+};
+
 
 const Home = async () => {
   const allPosts = await fetchPosts();
