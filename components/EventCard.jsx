@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const EventCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   const { data: session } = useSession();
@@ -16,16 +16,22 @@ const EventCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
     try {
       const response = await fetch(`/api/event/${post._id.toString()}`, { 
         method: "PUT",
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           user: session?.user       
         }),
       });
 
-      if(response.ok) {
-        location.reload();
+      if (response.ok) {
+        // Update state or refetch data instead of reloading the page
+        router.refresh(); // Use Next.js router to refresh data
+      } else {
+        console.error('Failed to update signup');
       }
     } catch (error) {
-      console.log(error);
+      console.error('Error updating signup:', error);
     } 
   };
 
@@ -39,13 +45,15 @@ const EventCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   };
 
   const SignUpList = ({ data }) => {
+    if (!Array.isArray(data)) {
+      return <p>No signups available</p>;
+    }
+
     return (
-      <div className= 'event_layout'> 
+      <div className='event_layout'> 
         {data.map((user) => (
-          <div>
-            <p>
-            {user.name}
-            </p>
+          <div key={user.id}> {/* Ensure user.id is unique */}
+            <p>{user.name}</p>
           </div>
         ))}
       </div>
@@ -55,8 +63,7 @@ const EventCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   return (
     <div className='event_card'>
       <div className='flex justify-between items-start gap-5'>
-        <div className='flex-1 flex justify-start items-center gap-3'
-        >
+        <div className='flex-1 flex justify-start items-center gap-3'>
           <Image
             src={post.creator.image}
             alt='user_image'
@@ -75,16 +82,11 @@ const EventCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
           </div>
         </div>
 
-        {session?.user ?(
-          <div className = "outline_btn" onClick={handleSignups}>
-            <p>
-              Sign Up!
-            </p>
+        {session?.user ? (
+          <div className="outline_btn" onClick={handleSignups}>
+            <p>Sign Up!</p>
           </div>
-        ): (
-          <div>
-          </div>
-        )}
+        ) : null}
       </div>
 
       <p className='my-4 font-satoshi text-sm text-gray-700'>{post.event}</p>
@@ -113,16 +115,13 @@ const EventCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
       )}
 
       <div>
-      <br/>
-      <hr/>
-      <br/>
-        <h1 className = "font-bold"> 
-          SignUps
-        </h1>
-        <SignUpList data = {post.signups} />
+        <br/>
+        <hr/>
+        <br/>
+        <h1 className="font-bold">SignUps</h1>
+        <SignUpList data={post.signups || []} />
       </div>
     </div>
-    
   );
 };
 

@@ -53,6 +53,10 @@ const Feed = ({ allPosts }) => {
     setSearchedResults(searchResult);
   };
 
+  // Determine if there are no events
+  const hasEvents = allPosts.length > 0;
+  const filteredPosts = searchText ? searchedResults : allPosts;
+
   return (
     <section className="feed">
       <input
@@ -65,13 +69,17 @@ const Feed = ({ allPosts }) => {
       />
 
       {/* All Events */}
-      {searchText ? (
-        <EventCardList
-          data={searchedResults}
-          handleTagClick={handleTagClick}
-        />
+      {hasEvents ? (
+        filteredPosts.length > 0 ? (
+          <EventCardList
+            data={filteredPosts}
+            handleTagClick={handleTagClick}
+          />
+        ) : (
+          <p>No events found for the search criteria.</p>
+        )
       ) : (
-        <EventCardList data={allPosts} handleTagClick={handleTagClick} />
+        <p>There are currently no events.</p>
       )}
     </section>
   );
