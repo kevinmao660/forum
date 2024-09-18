@@ -11,7 +11,7 @@ function Home(){
   async function fetchEvents() {
     console.log('Fetching events...');
     try {
-      const response = await fetch('http://localhost:3000/api/event', {
+      const response = await fetch('http://https://forum-ruddy.vercel.app/api/event', {
         // headers: {
         //   'Cache-Control': 'no-cache', // Ensure no cache
         // },
