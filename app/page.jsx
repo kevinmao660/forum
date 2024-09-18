@@ -1,43 +1,55 @@
+"use client"; // This is a client component 👈🏽
+
 import Feed from '@components/Feed';
 
-async function fetchEvents() {
-  console.log('Fetching events...');
-  try {
-    const response = await fetch('https://forum-ruddy.vercel.app/api/event', {
-      headers: {
-        'Cache-Control': 'no-cache', // Ensure no cache
-      },
-    });
-    console.log('Response status:', response.status);
+import { useState, useEffect } from 'react'
 
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
+function Home(){
+  const [allPosts,setAllPosts] = useState([]);
+
+
+  async function fetchEvents() {
+    console.log('Fetching events...');
+    try {
+      const response = await fetch('http://localhost:3000/api/event', {
+        // headers: {
+        //   'Cache-Control': 'no-cache', // Ensure no cache
+        // },
+      });
+      console.log('Response status:', response.status);
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      // Check content type
+      const contentType = response.headers.get('content-type');
+      console.log('Content-Type:', contentType);
+
+      // Parse response based on content type
+      let data;
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        const text = await response.text();
+        console.log(text)
+        data = JSON.parse(text);
+      }
+
+      console.log('Fetched events data:', data);
+      
+      setAllPosts(data);
+      return data;
+    } catch (error) {
+      console.error('Failed to fetch events:', error);
+      return [];
     }
-
-    // Check content type
-    const contentType = response.headers.get('content-type');
-    console.log('Content-Type:', contentType);
-
-    // Parse response based on content type
-    let data;
-    if (contentType && contentType.includes('application/json')) {
-      data = await response.json();
-    } else {
-      const text = await response.text();
-      data = JSON.parse(text);
-    }
-
-    console.log('Fetched events data:', data);
-    
-    return data;
-  } catch (error) {
-    console.error('Failed to fetch events:', error);
-    return [];
   }
-}
 
-const Home = async () => {
-  const allPosts = await fetchEvents();
+
+  useEffect(()=>{
+    fetchEvents()
+  },[])
 
   return (
     <section className="w-full flex-center flex-col">
@@ -50,8 +62,8 @@ const Home = async () => {
       <p className="desc text-center">
         Forum is a social platform that connects event goers to event coordinators.
       </p>
-
-      <Feed allPosts={allPosts} />
+      {allPosts? <Feed allPosts={allPosts}></Feed>:<></>}
+      {/* <Feed allPosts={allPosts} /> */}
     </section>
   );
 };
