@@ -16,7 +16,9 @@ function Home(){
         throw new Error(`Error: ${response.statusText}`);
       }
       let data = await response.json();
+      console.log('Fetched events data:', data);
       setAllPosts(data);
+      console.log('Got passed setallposts');
       return data;
     } catch (error) {
       console.error('Failed to fetch events:', error);
