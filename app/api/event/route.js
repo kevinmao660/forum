@@ -5,12 +5,11 @@ export const GET = async (request) => {
     try {
       await connectToDB();
       const events = await Event.find({}).populate('creator');
-      console.log('Returning events:', events);
   
       return new Response(JSON.stringify(events), {
         status: 200,
         headers: {
-          'Content-Type': 'application/json', // Ensure this header is set correctly
+          'Content-Type': 'application/json',
         },
       });
     } catch (error) {

@@ -10,7 +10,7 @@ function Home(){
   async function fetchEvents() {
     console.log('Fetching events...');
     try {
-      const response = await fetch('http://localhost:3000/api/event', {cache: 'no-store'});
+      const response = await fetch('/api/event', {cache: 'no-store'});
       console.log('Response status:', response.status);
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -39,8 +39,7 @@ function Home(){
       <p className="desc text-center">
         Forum is a social platform that connects event goers to event coordinators.
       </p>
-      {allPosts? <Feed allPosts={allPosts}></Feed>:<></>}
-      {/* <Feed allPosts={allPosts} /> */}
+      {allPosts ? <Feed allPosts={allPosts}></Feed>:<></>}
     </section>
   );
 };
