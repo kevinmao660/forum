@@ -10,7 +10,13 @@ function Home(){
   async function fetchEvents() {
     console.log('Fetching events...');
     try {
-      const response = await fetch('/api/event', {cache: 'no-store'});
+      const response = await fetch('/api/event', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store',
+      });
       console.log('Response status:', response.status);
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
